@@ -1,0 +1,32 @@
+[package]
+name = "poem-casbin-auth"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Casbin poem access control middleware"
+homepage = "https://github.com/casbin-rs/poem-cabin"
+readme = "README.md"
+
+[lib]
+name = "poem_casbin_auth"
+path = "src/lib.rs"
+
+[dependencies]
+casbin = { version = "2.0.9", default-features = false, features = ["incremental", "cached"] }
+tokio = { version = "1.17.0", default-features = false, optional = true }
+async-std = { version = "1.10.0", default-features = false, optional = true }
+poem = "1.3.31"
+
+[features]
+default = ["runtime-tokio"]
+
+runtime-tokio = ["casbin/runtime-tokio", "tokio/sync"]
+runtime-async-std = ["casbin/runtime-async-std", "async-std/std"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+
+[profile.dev]
+split-debuginfo = "unpacked"
